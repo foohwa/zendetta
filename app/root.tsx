@@ -8,6 +8,8 @@ import {
 
 import type { LinksFunction } from "@remix-run/node";
 import stylesheet from "~/tailwind.css?url";
+import Sidebar from "~/components/sidebar";
+import Header from "~/components/header";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -22,8 +24,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
-        {children}
+      <body className="grid min-h-screen grid-cols-[250px_1fr] grid-rows-[60px_1fr]">
+        <Sidebar className="col-start-1 col-end-2 row-start-1 row-end-3">
+          Sidebar content
+        </Sidebar>
+        <div className="col-start-2 col-end-3 row-start-1 row-end-2">
+          <Header />
+        </div>
+        <div className="col-start-2 col-end-3 row-start-2 row-end-3 p-4">
+          <Outlet />
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>
