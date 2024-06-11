@@ -8,6 +8,7 @@ import {
 
 import type { LinksFunction } from "@remix-run/node";
 import stylesheet from "~/tailwind.css?url";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import Sidebar from "~/components/sidebar";
 import Header from "~/components/header";
 
@@ -17,7 +18,7 @@ export const links: LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="bumblebee">
+    <html lang="en" data-theme="bumblebee" className="antialiased">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,9 +26,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="grid min-h-screen grid-cols-[250px_1fr] grid-rows-[60px_1fr]">
-        <Sidebar className="col-start-1 col-end-2 row-start-1 row-end-3">
-          Sidebar content
-        </Sidebar>
+        <Sidebar className="col-start-1 col-end-2 row-start-1 row-end-3" />
         <div className="col-start-2 col-end-3 row-start-1 row-end-2">
           <Header />
         </div>

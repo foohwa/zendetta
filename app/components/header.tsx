@@ -13,7 +13,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="prose flex h-full items-center justify-between border-b p-4">
+      <div className="min-w-f\ prose flex h-full items-center justify-between border-b p-4">
         <h3>{formattedPathname}</h3>
       </div>
     </>
