@@ -18,6 +18,10 @@ const localizer = dateFnsLocalizer({
 
 export const BigCalendar = (props: Omit<CalendarProps, "localizer">) => {
   return (
-    <Calendar style={{ height: "85vh" }} {...props} localizer={localizer} />
+    <Calendar
+      style={{ height: "85vh", width: "100%" }}
+      {...props}
+      localizer={localizer}
+    />
   );
 };

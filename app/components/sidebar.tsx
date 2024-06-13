@@ -21,7 +21,7 @@ export type SidebarProps = {
   children?: ReactNode;
 } & HTMLAttributes<HTMLElement>;
 
-export default function Sidebar({ children, className }: SidebarProps) {
+export default function Sidebar({ className }: SidebarProps) {
   return (
     <aside className={cn("h-screen", className)}>
       <nav className="flex h-full flex-col border-r bg-base-200/10 shadow-sm">

@@ -15,6 +15,11 @@
     background-color: white !important;
 }
 
+/* Causing page overflow */
+.rbc-time-view-resources .rbc-time-header-content {
+    min-width: 227px;
+}
+
 .rbc-time-slot {
     /*color: #74a4c3;*/
     z-index: 1;
@@ -34,16 +39,19 @@
 .rbc-background-event {
     z-index: 2;
     padding: 0px !important;
-    border: none !important;
+    border: 2px solid transparent !important;
+    background-color: transparent !important;
+    border-radius: 8px !important;
 }
 
-/*.rbc-event-label {*/
-/*    display: none !important;*/
-/*}*/
+.rbc-event-label {
+    display: none !important;
+}
 
 .rbc-events-container {
     width: 100% !important;
 }
+
 
 /*Timeslots Customization*/
 /*.rbc-day-slot .rbc-time-slot:after {*/

@@ -1,4 +1,4 @@
-export interface ReservationCalendarHeader {
+export interface AppointmentCalendarHeader {
   id: string;
   title: string;
   totalOfTodayAppointment: number;

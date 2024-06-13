@@ -1,8 +1,8 @@
 import { ISODate, ISODateTime, Treatment } from "~/types";
 
-export interface Reservation {
-  reservationId: string;
-  reservationDate: ISODate;
+export interface Appointment {
+  appointmentId: string;
+  appointmentDate: ISODate;
   startTime: ISODateTime;
   endTime: ISODateTime;
   status: ReservationStatus;
@@ -11,4 +11,10 @@ export interface Reservation {
   treatment: Treatment;
 }
 
-export type ReservationStatus = "FINISHED" | "IN_PROGRESS" | "REGISTERED";
+export type ReservationStatusType = keyof typeof ReservationStatus;
+
+export enum ReservationStatus {
+  "FINISHED" = "FINISHED",
+  "IN_PROGRESS" = "IN_PROGRESS",
+  "REGISTERED" = "REGISTERED",
+}
