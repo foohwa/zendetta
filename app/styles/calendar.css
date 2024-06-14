@@ -17,7 +17,7 @@
 
 /* Causing page overflow */
 .rbc-time-view-resources .rbc-time-header-content {
-    min-width: 227px;
+    min-width: 300px;
 }
 
 .rbc-time-slot {
@@ -30,8 +30,13 @@
 }
 
 .rbc-timeslot-group {
-    min-height: 60px !important;
+    min-height: 100px !important;
+    min-width: 90px !important;
     align-items: center;
+}
+
+.rbc-time-header-gutter {
+    min-width: 91px !important;
 }
 
 /*Event Styles*/
@@ -49,7 +54,14 @@
 }
 
 .rbc-events-container {
-    width: 100% !important;
+    margin: 0 2px !important;
+    border: none !important;
+    /*width: 100% !important;*/
+}
+
+.rbc-current-time-indicator {
+    background-color: indianred;
+    height: 1.5px;
 }
 
 
