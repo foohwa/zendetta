@@ -1,4 +1,9 @@
-import { Calendar, CalendarProps, dateFnsLocalizer } from "react-big-calendar";
+import {
+  Calendar,
+  CalendarProps,
+  dateFnsLocalizer,
+  Formats,
+} from "react-big-calendar";
 // import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import { enUS } from "date-fns/locale/en-US";
 import { format, getDay, parse, startOfWeek } from "date-fns";
@@ -17,12 +22,16 @@ const localizer = dateFnsLocalizer({
 
 // const DnDCalendar = withDragAndDrop(Calendar);
 export const BigCalendar = (props: Omit<CalendarProps, "localizer">) => {
-  // TDOD: Add type to format function
-  const { formats } = useMemo(
+  const { formats } = useMemo<{ formats: Formats }>(
     () => ({
       formats: {
-        timeGutterFormat: (date, culture, localizer) =>
-          localizer.format(date, "ha", culture).toLowerCase(),
+        timeGutterFormat: (date, culture, localizer) => {
+          if (!localizer) {
+            return "";
+          }
+
+          return localizer.format(date, "ha", culture).toLowerCase();
+        },
       },
     }),
     [],

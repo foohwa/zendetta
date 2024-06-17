@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     border:none ;
-    height: 36px !important;
+    height: 70px !important;
 }
 
 .rbc-allday-cell {
@@ -23,6 +23,7 @@
 .rbc-time-slot {
     /*color: #74a4c3;*/
     z-index: 1;
+    margin-top: 5px;
 }
 
 .rbc-time-content {
@@ -30,13 +31,18 @@
 }
 
 .rbc-timeslot-group {
+    justify-items: center;
     min-height: 100px !important;
     min-width: 90px !important;
     align-items: center;
 }
 
 .rbc-time-header-gutter {
-    min-width: 91px !important;
+    font-size: 12px;
+    font-weight: 500;
+    margin: auto 0;
+    text-align: center;
+    min-width: 70px !important;
 }
 
 /*Event Styles*/

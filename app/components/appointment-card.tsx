@@ -42,7 +42,6 @@ export const AppointmentCardComponent = (appointment: Appointment) => {
     timeZone: "Asia/Kuala_Lumpur",
   });
 
-  console.log(formattedStartTime);
   const formattedEndTime = format(appointment.endTime, "h:mm a", {
     timeZone: "Asia/Kuala_Lumpur",
   });
