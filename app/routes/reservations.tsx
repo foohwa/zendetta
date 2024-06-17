@@ -1,13 +1,16 @@
-import { BigCalendar } from "~/components/calendar";
 import resourcesEvents, {
   ReservationHeader,
 } from "~/resources/resourcesEvents";
 import "../styles/calendar.css";
-import { AppointmentCardComponent } from "~/components/appointment-card";
 import { Components } from "react-big-calendar";
-import { DoctorResourceHeader } from "~/components/doctor-resource-header";
 import { AppointmentCalendarHeader } from "~/types";
-import { CustomCalendarToolbar } from "~/components/custom-calendar-toolbar";
+import {
+  AppointmentCardComponent,
+  BigCalendar,
+  CustomCalendarToolbar,
+  CustomTimeGutterHeader,
+  DoctorResourceHeader,
+} from "~/components";
 
 export default function Reservations() {
   const components: Components = {
@@ -22,13 +25,7 @@ export default function Reservations() {
       return <CustomCalendarToolbar {...toolbarProps} />;
     },
     timeGutterHeader: () => {
-      return (
-        <>
-          GMT
-          <br />
-          +8:00
-        </>
-      );
+      return <CustomTimeGutterHeader />;
     },
   };
 
@@ -43,7 +40,6 @@ export default function Reservations() {
           min={new Date(2024, 1, 0, 8, 0, 0)}
           max={new Date(2024, 1, 0, 19, 0, 0)}
           components={components}
-          // toolbar={false}
         />
       </div>
     </>

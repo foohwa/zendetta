@@ -46,3 +46,13 @@ export const BigCalendar = (props: Omit<CalendarProps, "localizer">) => {
     />
   );
 };
+
+export const CustomTimeGutterHeader = () => {
+  return (
+    <>
+      GMT
+      <br />
+      +8:00
+    </>
+  );
+};

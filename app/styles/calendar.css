@@ -1,3 +1,11 @@
+.rbc-time-view{
+    border: 1px solid #e5e7eb;
+}
+
+.rbc-time-header .rbc-overflowing {
+    border: 1px solid #e5e7eb;
+}
+
 .rbc-header {
     font-size: 14px !important;
     display: flex;
@@ -17,6 +25,7 @@
 
 /* Causing page overflow */
 .rbc-time-view-resources .rbc-time-header-content {
+    border-left: 1px solid #e5e7eb;
     min-width: 300px;
 }
 
@@ -27,7 +36,11 @@
 }
 
 .rbc-time-content {
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #e5e7eb;
+}
+
+.rbc-time-content > * + * > * {
+    border-left: 1px solid #e5e7eb;
 }
 
 .rbc-timeslot-group {
@@ -35,6 +48,7 @@
     min-height: 100px !important;
     min-width: 90px !important;
     align-items: center;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .rbc-time-header-gutter {
