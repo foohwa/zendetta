@@ -13,7 +13,7 @@ import Sidebar from "~/components/sidebar";
 import Header from "~/components/header";
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesheet },
+  { rel: "stylesheet", href: stylesheet, as: "style" },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {

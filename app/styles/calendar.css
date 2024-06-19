@@ -1,4 +1,5 @@
-.rbc-time-view{
+/* General Styles */
+.rbc-time-view {
     border: 1px solid #e5e7eb;
 }
 
@@ -11,26 +12,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border:none ;
+    border: none;
     height: 70px !important;
 }
 
 .rbc-allday-cell {
-    @apply hidden;
+    display: none;
 }
 
-.rbc-time-header-cell, .rbc-today {
+.rbc-time-header-cell,
+.rbc-today {
     background-color: white !important;
 }
 
-/* Causing page overflow */
+/* Fix for page overflow */
 .rbc-time-view-resources .rbc-time-header-content {
     border-left: 1px solid #e5e7eb;
     min-width: 300px;
 }
 
-.rbc-time-slot {
-    /*color: #74a4c3;*/
+.rbc-time-gutter .rbc-time-slot {
     z-index: 1;
     margin-top: 5px;
 }
@@ -44,12 +45,18 @@
 }
 
 .rbc-timeslot-group {
+    height: 100% !important;
+    width: 100% !important;
     justify-items: center;
     min-height: 100px !important;
     min-width: 90px !important;
     align-items: center;
     border-bottom: 1px solid #e5e7eb;
 }
+
+/*.rbc-timeslot-group:hover {*/
+/*    background-color: red !important;*/
+/*}*/
 
 .rbc-time-header-gutter {
     font-size: 12px;
@@ -59,7 +66,7 @@
     min-width: 70px !important;
 }
 
-/*Event Styles*/
+/* Event Styles */
 .rbc-event,
 .rbc-background-event {
     z-index: 2;
@@ -69,6 +76,10 @@
     border-radius: 8px !important;
 }
 
+.rbc-event {
+    pointer-events: auto;
+}
+
 .rbc-event-label {
     display: none !important;
 }
@@ -76,7 +87,7 @@
 .rbc-events-container {
     margin: 0 2px !important;
     border: none !important;
-    /*width: 100% !important;*/
+    pointer-events: none;
 }
 
 .rbc-current-time-indicator {
@@ -84,11 +95,19 @@
     height: 1.5px;
 }
 
-
-/*Timeslots Customization*/
-/*.rbc-day-slot .rbc-time-slot:after {*/
-/*    content: "";*/
-/*    width: 100%;*/
-/*    border-top: 1px solid #9ca3af;*/
-/*    display: block;*/
+/* Timeslots Customization */
+/*.rbc-day-slot .rbc-time-slot {*/
+/*   z-index: 1000 !important;*/
 /*}*/
+
+.rbc-day-slot .rbc-time-slot:nth-child(2) {
+    width: 100%;
+}
+
+.rbc-day-slot .rbc-time-slot:nth-child(2):after {
+    content: "";
+    width: 100%;
+    border-top: 1px solid #f9f9fb;
+    display: block;
+}
+

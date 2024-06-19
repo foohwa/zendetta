@@ -81,3 +81,13 @@ export const AppointmentCardComponent = (appointment: Appointment) => {
     </div>
   );
 };
+
+export const OnLeaveCard = () => {
+  return (
+    <div className="bg-darken-striped grid h-full w-full items-center justify-items-center">
+      <p className="text-md rounded-sm bg-[#b3b3b3] p-0.5 font-semibold">
+        Not Available
+      </p>
+    </div>
+  );
+};
