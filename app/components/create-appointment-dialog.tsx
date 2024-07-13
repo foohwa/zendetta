@@ -9,11 +9,12 @@ import {
 import { IconX } from "@tabler/icons-react";
 import { TreatmentAndDentistPage } from "~/components/reservations/treatment-and-dentist";
 import { EventCardEvent } from "~/components/add-event-card";
+import { useState } from "react";
 
 type CreateAppointmentDialogProps = {
   open: boolean;
   onClose: (value: boolean) => void;
-  selectedSlot?: EventCardEvent | null;
+  selectedSlot: EventCardEvent;
 };
 
 export const CreateAppointmentDialogComponent = ({
@@ -21,7 +22,7 @@ export const CreateAppointmentDialogComponent = ({
   onClose,
   selectedSlot,
 }: CreateAppointmentDialogProps) => {
-  console.log(selectedSlot);
+  const [step, setStep] = useState(1);
 
   return (
     <Transition appear={true} show={open}>
@@ -105,7 +106,7 @@ export const CreateAppointmentDialogComponent = ({
 
                       {/* Tab Content */}
                       <div className="pb-2">
-                        <TreatmentAndDentistPage />
+                        <TreatmentAndDentistPage {...selectedSlot} />
                       </div>
                     </div>
 

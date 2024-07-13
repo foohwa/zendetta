@@ -2,7 +2,7 @@ import { Dentist } from "~/types/dentist";
 
 export const dentists: Dentist[] = [
   {
-    dentistId: "1",
+    dentistId: "42",
     firstName: "Jane",
     lastName: "Johnson",
     gender: "Female",
@@ -25,9 +25,9 @@ export const dentists: Dentist[] = [
     avatarUrl: "https://i.pravatar.cc/150?img=68",
   },
   {
-    dentistId: "2",
-    firstName: "James",
-    lastName: "Wilson",
+    dentistId: "19",
+    firstName: "Sam",
+    lastName: "Smith",
     gender: "Male",
     dateOfBirth: new Date("1979-11-23"),
     phoneNumber: "+0987654321",
@@ -48,9 +48,9 @@ export const dentists: Dentist[] = [
     avatarUrl: "https://i.pravatar.cc/150?img=32",
   },
   {
-    dentistId: "3",
-    firstName: "Rachel",
-    lastName: "Miller",
+    dentistId: "84",
+    firstName: "Alex",
+    lastName: "Brown",
     gender: "Female",
     dateOfBirth: new Date("1985-07-08"),
     phoneNumber: "+1122334455",

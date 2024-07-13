@@ -17,6 +17,9 @@ import {
 } from "@tabler/icons-react";
 import { cn } from "~/lib/util";
 import { TimePicker } from "~/components/reservations/time-picker";
+import { dentists } from "~/resources/mock-data/doctorsMockData";
+import { ISODateTime } from "~/types";
+import { addHours, format, parseISO } from "date-fns";
 
 export type Treatment = {
   id: number;
@@ -32,11 +35,28 @@ const treatment: Treatment[] = [
   { id: 5, name: "Tooth Polishing" },
 ];
 
-export const TreatmentAndDentistPage = () => {
+type TreatmentAndDentistProps = {
+  selectedDentistId: string;
+  selectedDate: ISODateTime;
+};
+
+export const TreatmentAndDentistPage = ({
+  selectedDentistId,
+  selectedDate,
+}: TreatmentAndDentistProps) => {
   const [selectedTreatment, setSelectedTreatment] = useState<
     Treatment[] | null[] | undefined
-  >([treatment[0]]);
+  >([]);
   const [query, setQuery] = useState("");
+
+  const selectedDentist = dentists.find(
+    (dentist) => dentist.dentistId === selectedDentistId,
+  );
+  const date = parseISO(selectedDate);
+  const nextHour = addHours(date, 1);
+  const formattedDate = format(date, "EEEE, dd MMMM yyyy");
+  const formattedHour = format(date, "HHmm");
+  const formattedNextHour = format(nextHour, "HHmm");
 
   const filteredPeople =
     query === ""
@@ -111,17 +131,28 @@ export const TreatmentAndDentistPage = () => {
           </Label>
           <div className="mt-1 overflow-hidden rounded-lg border border-gray-500/15">
             <div className="flex items-center p-3">
-              <div>
-                <img
-                  alt=""
-                  src="https://i.pravatar.cc/150?img=68"
-                  className="inline-block h-9 w-9 rounded-full"
-                />
-              </div>
-              <div className="ml-3 space-y-1">
-                <p className="text-sm font-medium text-gray-700">
-                  Jane Johnson
+              {selectedDentist?.avatarUrl ? (
+                <div className="avatar">
+                  <div className="h-9 w-9 rounded-full">
+                    <img
+                      alt=""
+                      src={selectedDentist?.avatarUrl}
+                      className="inline-block"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="avatar placeholder">
+                  <div className="size-9 rounded-full bg-neutral text-neutral-content">
+                    <span>{selectedDentist?.firstName.charAt(0)}</span>
+                  </div>
+                </div>
+              )}
+              <div className="ml-3 space-y-0.5">
+                <p className="text-sm font-semibold text-gray-700">
+                  {`${selectedDentist?.firstName} ${selectedDentist?.lastName}`}
                 </p>
+                {/* TODO: should this be together with dentist object or separate api */}
                 <p className="text-xs text-gray-500">
                   Today&apos;s appointment:{" "}
                   <span className="text-gray-700">0 patient(s)</span>
@@ -135,18 +166,18 @@ export const TreatmentAndDentistPage = () => {
           <Label className="text-xs/6 font-medium tracking-tight">
             Date & Time
           </Label>
-          <div className="mt-1 flex items-baseline justify-between gap-2">
+          <div className="mt-1 flex items-center justify-between gap-2">
             <div className="flex-1">
               <div className="w-max border-l-2 border-l-primary px-2 py-1">
                 <p className="text-sm font-semibold tracking-tight">
-                  Friday, 16 May 2022
+                  {formattedDate}
                 </p>
               </div>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <TimePicker selectedTime={"08.00 am"} />
+              <TimePicker selectedTime={formattedHour} />
               <span className="text-sm text-gray-500/80">to</span>
-              <TimePicker selectedTime={"09.00 am"} />
+              <TimePicker selectedTime={formattedNextHour} />
             </div>
           </div>
         </Field>
@@ -156,7 +187,7 @@ export const TreatmentAndDentistPage = () => {
             Quick Note <span className="text-gray-400">(Optional)</span>
           </Label>
           <Textarea
-            className="mt-1 block w-full resize-y rounded-lg border border-gray-500/15 bg-white/5 px-3 py-1.5 text-sm/6 text-white focus:outline-none data-[focus]:border-primary data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25 data-[focus]:ring-primary"
+            className="mt-1 block w-full resize-y rounded-lg border border-gray-500/15 bg-white/5 px-3 py-1.5 text-sm/6 focus:outline-none data-[focus]:border-primary data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25 data-[focus]:ring-primary"
             rows={3}
           />
         </Field>

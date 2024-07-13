@@ -13,7 +13,9 @@ export type TimePickerProps = {
 };
 
 export const TimePicker = ({ selectedTime }: TimePickerProps) => {
-  const availableTimes: string[] = generateTimeIntervals();
+  const availableTimes: { id: string; value: string }[] =
+    generateTimeIntervals();
+
   const [selected, setSelected] = useState(selectedTime);
 
   return (
@@ -22,8 +24,8 @@ export const TimePicker = ({ selectedTime }: TimePickerProps) => {
         <ListboxButton className="relative w-fit cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left leading-6 text-black ring-1 ring-inset ring-gray-500/15 focus:outline-none focus:ring-2 focus:ring-primary">
           <span className="flex items-center">
             <IconClockHour7 className="size-5 text-gray-500/50" />
-            <span className="ml-2 block truncate text-sm lowercase">
-              {selected}
+            <span className="ml-2 block truncate px-1 text-sm lowercase">
+              {availableTimes.find((time) => time.id === selected)!.value}
             </span>
           </span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -40,12 +42,12 @@ export const TimePicker = ({ selectedTime }: TimePickerProps) => {
         >
           {availableTimes.map((time) => (
             <ListboxOption
-              key={time}
+              key={time.id}
               className="group relative cursor-default select-none px-3 py-2 text-sm lowercase text-gray-900 data-[focus]:bg-gray-500/5"
-              value={time}
+              value={time.id}
             >
               <span className="block truncate font-normal group-data-[selected]:font-semibold">
-                {time}
+                {time.value}
               </span>
 
               {/*<span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">*/}
