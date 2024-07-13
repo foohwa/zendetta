@@ -86,6 +86,9 @@ export const BlockedEvents = [
     end: parseISO("2024-07-13T03:00:00Z"), // Adjusted to 2pm UTC
   },
 ];
+
+// TODO: need to change the shape of this to cater for on leave, other kind of event
+// possibly, can do it with background event props but background events had it limitation
 export const BackgroundEvents: Appointment[] = [
   {
     dentistId: "42",
