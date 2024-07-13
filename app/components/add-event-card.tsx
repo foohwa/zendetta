@@ -1,16 +1,23 @@
-import { ReactElement } from "react";
+import { IconPlus } from "@tabler/icons-react";
 
-export type AddEventCardProps = {
-  children: ReactElement;
+export type AddEventCardTimeslotProps = {
+  // children: ReactElement;
+  value: Date;
+  resource: string;
+  onClick: (date: Date, resource: string) => void;
 };
 
-export const AddEventCard = () => {
+export const AddEventTimeslotCard = ({
+  value,
+  resource,
+  onClick,
+}: AddEventCardTimeslotProps) => {
   return (
-    <div
-      className="rbc-time-slot h-full w-full hover:bg-violet-500"
-      onMouseEnter={() => {
-        console.log("Add event");
-      }}
-    ></div>
+    <button
+      className="rbc-time-slot group h-full w-full hover:bg-stone-100/50"
+      onClick={() => onClick(value, resource)}
+    >
+      <IconPlus className="invisible m-auto text-stone-500 group-hover:visible" />
+    </button>
   );
 };

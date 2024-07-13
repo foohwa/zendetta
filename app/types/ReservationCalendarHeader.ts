@@ -1,8 +1,8 @@
-export interface AppointmentCalendarHeader {
-  id: string;
-  title: string;
+import { Dentist } from "~/types/dentist";
+
+export interface AppointmentCalendarHeader
+  extends Pick<Dentist, "dentistId" | "firstName" | "lastName" | "avatarUrl"> {
   totalOfTodayAppointment: number;
-  doctorAvatar?: string;
 }
 
 // export interface ReservationCalendarHeader {

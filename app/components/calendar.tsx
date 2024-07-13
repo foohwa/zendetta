@@ -8,6 +8,7 @@ import {
 import { enUS } from "date-fns/locale/en-US";
 import { format, getDay, parse, startOfWeek } from "date-fns";
 import { useMemo } from "react";
+import { AppointmentCalendarHeader } from "~/types";
 
 const locales = {
   "en-US": enUS,
@@ -20,8 +21,15 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
+export type BigCalendarProps<T extends object, R extends object> = Omit<
+  CalendarProps<T, R>,
+  "localizer"
+>;
+
 // const DnDCalendar = withDragAndDrop(Calendar);
-export const BigCalendar = (props: Omit<CalendarProps, "localizer">) => {
+export const BigCalendar = <T extends object, R extends object>(
+  props: BigCalendarProps<T, R>,
+) => {
   const { formats } = useMemo<{ formats: Formats }>(
     () => ({
       formats: {

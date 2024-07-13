@@ -3,12 +3,13 @@ import { ISODate, ISODateTime, Treatment } from "~/types";
 export interface Appointment {
   appointmentId: string;
   appointmentDate: ISODate;
-  startTime: ISODateTime;
-  endTime: ISODateTime;
+  start: ISODateTime;
+  end: ISODateTime;
   status: ReservationStatus;
   patientName: string;
   patientId: string;
-  treatment: Treatment;
+  treatment?: Treatment;
+  dentistId: string | string[];
 }
 
 export type ReservationStatusType = keyof typeof ReservationStatus;

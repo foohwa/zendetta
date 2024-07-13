@@ -38,11 +38,11 @@ const toColorMapForAppointment = (
 
 export const AppointmentCardComponent = (appointment: Appointment) => {
   // Format the Date objects to the desired time format
-  const formattedStartTime = format(appointment.startTime, "h:mm a", {
+  const formattedStartTime = format(appointment.start, "h:mm a", {
     timeZone: "Asia/Kuala_Lumpur",
   });
 
-  const formattedEndTime = format(appointment.endTime, "h:mm a", {
+  const formattedEndTime = format(appointment.end, "h:mm a", {
     timeZone: "Asia/Kuala_Lumpur",
   });
 
@@ -62,7 +62,7 @@ export const AppointmentCardComponent = (appointment: Appointment) => {
         <span className="inline-flex items-center text-sm text-gray-500">
           {formattedStartTime} <IconChevronRight size={15} /> {formattedEndTime}
         </span>
-        <span className="badge mt-2">{appointment.treatment.name}</span>
+        <span className="badge mt-2">{appointment.treatment?.name}</span>
       </div>
       <div className="absolute right-2">
         <span className="badge rounded-md px-1">
@@ -84,7 +84,7 @@ export const AppointmentCardComponent = (appointment: Appointment) => {
 
 export const OnLeaveCard = () => {
   return (
-    <div className="bg-darken-striped grid h-full w-full items-center justify-items-center">
+    <div className="grid h-full w-full items-center justify-items-center bg-darken-striped">
       <p className="text-md rounded-sm bg-[#b3b3b3] p-0.5 font-semibold">
         Not Available
       </p>

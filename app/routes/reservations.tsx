@@ -1,10 +1,11 @@
-import resourcesEvents, {
+import {
+  appointmentEvents,
   BackgroundEvents,
   ReservationHeader,
 } from "~/resources/resourcesEvents";
 import "../styles/calendar.css";
 import { Components } from "react-big-calendar";
-import { AppointmentCalendarHeader } from "~/types";
+import { Appointment, AppointmentCalendarHeader } from "~/types";
 import {
   AppointmentCardComponent,
   BigCalendar,
@@ -14,9 +15,10 @@ import {
   OnLeaveCard,
 } from "~/components";
 import { ReactElement, useState } from "react";
-import { isSameHour, isSameMinute, set } from "date-fns";
+import { isSameHour, isSameMinute, parseISO, set } from "date-fns";
 import { BreakTimeCard } from "~/components/break-time-card";
-import { AddEventCard } from "~/components/add-event-card";
+import { AddEventTimeslotCard } from "~/components/add-event-card";
+import { CreateAppointmentDialogComponent } from "~/components/create-appointment-dialog";
 
 type TimeSlotWrapperProps = {
   children: ReactElement;
@@ -25,22 +27,35 @@ type TimeSlotWrapperProps = {
 };
 
 export default function Reservations() {
-  const [events, setEvents] = useState(resourcesEvents.events);
+  const [events, setEvents] = useState([
+    ...appointmentEvents,
+    ...BackgroundEvents,
+  ]);
+  const [open, setOpen] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState<Date>(new Date());
 
-  const components: Components = {
-    event: ({ event }) => {
-      if (!event.resource) {
-        return;
-      }
+  const onAddEvent = (date: Date, data: any) => {
+    // console.log(date);
+    // console.log(data);
+    setSelectedSlot(date);
+    setOpen(true);
+  };
 
-      if (event.title === "ON_LEAVE") {
+  const components: Components<Appointment, AppointmentCalendarHeader> = {
+    event: ({ event, ...rest }) => {
+      // console.log(event);
+      // console.log(event);
+      // if (!event) {
+      //   return;
+      // }
+
+      if (!event.treatment) {
         return <OnLeaveCard />;
       }
-      return <AppointmentCardComponent {...event.resource.appointment} />;
+      return <AppointmentCardComponent {...event} />;
     },
     resourceHeader: ({ resource }) => {
-      const props = resource as AppointmentCalendarHeader;
-      return <DoctorResourceHeader {...props} />;
+      return <DoctorResourceHeader {...resource} />;
     },
     toolbar: (toolbarProps) => {
       return <CustomCalendarToolbar {...toolbarProps} events={events} />;
@@ -86,7 +101,22 @@ export default function Reservations() {
 
       if (resource) {
         // TODO - now find a way to only render one components in the timeslot instead of two
-        return <AddEventCard />;
+        // return cloneElement(children, {
+        //   children: (
+        //     <AddEventTimeslotCard
+        //       onClick={onAddEvent}
+        //       resource={resource}
+        //       value={selectedDate}
+        //     />
+        //   ),
+        // });
+        return (
+          <AddEventTimeslotCard
+            onClick={onAddEvent}
+            resource={resource}
+            value={selectedDate}
+          />
+        );
       }
 
       return children;
@@ -104,8 +134,15 @@ export default function Reservations() {
           views={["day", "week"]}
           defaultView="day"
           events={events}
-          backgroundEvents={BackgroundEvents}
+          startAccessor={(appointment) => parseISO(appointment.start)}
+          endAccessor={(appointment) => parseISO(appointment.end)}
+          titleAccessor={(appointment) => appointment.patientName}
+          // backgroundEvents={BackgroundEvents}
           resources={ReservationHeader}
+          resourceAccessor={(appointment) => appointment.dentistId}
+          resourceIdAccessor="dentistId"
+          resourceTitleAccessor="firstName"
+          // allDayAccessor="status"
           min={new Date(2024, 1, 0, 8, 0, 0)}
           max={new Date(2024, 1, 0, 19, 0, 0)}
           components={components}
@@ -113,6 +150,11 @@ export default function Reservations() {
             // console.log(event);
             // console.log(e);
           }}
+        />
+        <CreateAppointmentDialogComponent
+          open={open}
+          selectedSlot={selectedSlot}
+          onClose={(value) => setOpen(value)}
         />
       </div>
     </>

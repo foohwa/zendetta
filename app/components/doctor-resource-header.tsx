@@ -2,20 +2,21 @@ import { AppointmentCalendarHeader } from "~/types";
 import { IconDots } from "@tabler/icons-react";
 
 export const DoctorResourceHeader = ({
-  doctorAvatar,
+  avatarUrl,
   totalOfTodayAppointment,
-  title,
+  firstName,
+  lastName,
 }: AppointmentCalendarHeader) => {
   return (
     <>
       <div className="relative flex h-[60px] w-full items-center gap-3 px-4 py-2">
         <div className="avatar">
           <div className="mask mask-circle size-10">
-            <img src={doctorAvatar} alt="Avatar Tailwind CSS Component" />
+            <img src={avatarUrl} alt="Avatar Tailwind CSS Component" />
           </div>
         </div>
         <div className="text-start">
-          <h6 className="font-bold">{title}</h6>
+          <h6 className="font-bold">{firstName + " " + lastName}</h6>
           <div className="text-xs leading-4">
             <span className="font-normal opacity-50">
               Today&apos;s appointment:&nbsp;

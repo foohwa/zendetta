@@ -96,18 +96,19 @@
 }
 
 /* Timeslots Customization */
-/*.rbc-day-slot .rbc-time-slot {*/
-/*   z-index: 1000 !important;*/
-/*}*/
-
-.rbc-day-slot .rbc-time-slot:nth-child(2) {
+.rbc-day-slot .rbc-time-slot {
     width: 100%;
 }
 
-.rbc-day-slot .rbc-time-slot:nth-child(2):after {
+/* This is to remove the 2nd 30min timeslot in each timeslot */
+.rbc-day-slot .rbc-time-slot:nth-child(2) {
+    display: none;
+}
+
+.rbc-day-slot .rbc-time-slot:after {
     content: "";
     width: 100%;
-    border-top: 1px solid #f9f9fb;
+    /*border-top: 1px solid #f9f9fb;*/
     display: block;
 }
 
