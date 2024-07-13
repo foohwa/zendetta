@@ -8,11 +8,12 @@ import {
 } from "@headlessui/react";
 import { IconX } from "@tabler/icons-react";
 import { TreatmentAndDentistPage } from "~/components/reservations/treatment-and-dentist";
+import { EventCardEvent } from "~/components/add-event-card";
 
 type CreateAppointmentDialogProps = {
   open: boolean;
   onClose: (value: boolean) => void;
-  selectedSlot?: Date;
+  selectedSlot?: EventCardEvent | null;
 };
 
 export const CreateAppointmentDialogComponent = ({
@@ -20,8 +21,10 @@ export const CreateAppointmentDialogComponent = ({
   onClose,
   selectedSlot,
 }: CreateAppointmentDialogProps) => {
+  console.log(selectedSlot);
+
   return (
-    <Transition show={open}>
+    <Transition appear={true} show={open}>
       <Dialog className="relative z-10" onClose={(value) => onClose(value)}>
         <TransitionChild
           enter="ease-in-out duration-500"

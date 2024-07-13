@@ -17,7 +17,10 @@ import {
 import { ReactElement, useState } from "react";
 import { isSameHour, isSameMinute, parseISO, set } from "date-fns";
 import { BreakTimeCard } from "~/components/break-time-card";
-import { AddEventTimeslotCard } from "~/components/add-event-card";
+import {
+  AddEventTimeslotCard,
+  EventCardEvent,
+} from "~/components/add-event-card";
 import { CreateAppointmentDialogComponent } from "~/components/create-appointment-dialog";
 
 type TimeSlotWrapperProps = {
@@ -32,12 +35,10 @@ export default function Reservations() {
     ...BackgroundEvents,
   ]);
   const [open, setOpen] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState<Date>(new Date());
+  const [selectedSlot, setSelectedSlot] = useState<EventCardEvent | null>(null);
 
-  const onAddEvent = (date: Date, data: any) => {
-    // console.log(date);
-    // console.log(data);
-    setSelectedSlot(date);
+  const onAddEvent = ({ selectedDate, selectedDentistId }: EventCardEvent) => {
+    setSelectedSlot({ selectedDate, selectedDentistId });
     setOpen(true);
   };
 
@@ -151,11 +152,13 @@ export default function Reservations() {
             // console.log(e);
           }}
         />
-        <CreateAppointmentDialogComponent
-          open={open}
-          selectedSlot={selectedSlot}
-          onClose={(value) => setOpen(value)}
-        />
+        {open && (
+          <CreateAppointmentDialogComponent
+            open={open}
+            selectedSlot={selectedSlot}
+            onClose={(value) => setOpen(value)}
+          />
+        )}
       </div>
     </>
   );
