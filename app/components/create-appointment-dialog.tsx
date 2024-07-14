@@ -22,7 +22,31 @@ export const CreateAppointmentDialogComponent = ({
   onClose,
   selectedSlot,
 }: CreateAppointmentDialogProps) => {
-  const [step, setStep] = useState(1);
+  const MIN_STEP = 1;
+  const MAX_STEP = 3;
+
+  const [step, setStep] = useState(MIN_STEP);
+
+  const nextStep = () => {
+    setStep((prevStep) => Math.min(prevStep + 1, MAX_STEP));
+  };
+
+  const prevStep = () => {
+    setStep((prevStep) => Math.max(prevStep - 1, MIN_STEP));
+  };
+
+  const renderForm = (step: number) => {
+    switch (step) {
+      case 1:
+        return <TreatmentAndDentistPage {...selectedSlot} />;
+      case 2:
+        break;
+      case 3:
+        break;
+      default:
+        return null;
+    }
+  };
 
   return (
     <Transition appear={true} show={open}>
@@ -105,16 +129,14 @@ export const CreateAppointmentDialogComponent = ({
                       </ul>
 
                       {/* Tab Content */}
-                      <div className="pb-2">
-                        <TreatmentAndDentistPage {...selectedSlot} />
-                      </div>
+                      <div className="pb-2">{renderForm(step)}</div>
                     </div>
 
                     {/* Footer */}
                     <div className="sticky bottom-0 flex flex-row-reverse border-t-[0.5px] bg-gray-50 px-6 py-4">
                       <button
                         type="button"
-                        onClick={() => onClose(false)}
+                        onClick={() => nextStep()}
                         className="ml-3 inline-flex w-auto justify-center rounded-md bg-secondary px-12 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondary/80"
                       >
                         Next
