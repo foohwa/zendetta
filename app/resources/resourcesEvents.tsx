@@ -10,8 +10,8 @@ export const appointmentEvents: Appointment[] = [
     dentistId: "42",
     appointmentId: "apt001",
     appointmentDate: "2024-07-16",
-    start: "2024-07-14T00:00:00Z", // Adjusted to 8am UTC
-    end: "2024-07-14T01:00:00Z", // Adjusted to 9am UTC
+    start: "2024-07-15T00:00:00Z", // Adjusted to 8am UTC
+    end: "2024-07-15T01:00:00Z", // Adjusted to 9am UTC
     status: ReservationStatus.IN_PROGRESS,
     patientName: "Jane Smith",
     patientId: "pat002",
@@ -24,8 +24,8 @@ export const appointmentEvents: Appointment[] = [
     dentistId: "19",
     appointmentId: "apt002",
     appointmentDate: "2024-07-16",
-    start: "2024-07-14T05:00:00Z", // Adjusted to 12pm UTC
-    end: "2024-07-14T06:00:00Z", // Adjusted to 1pm UTC
+    start: "2024-07-15T05:00:00Z", // Adjusted to 12pm UTC
+    end: "2024-07-15T06:00:00Z", // Adjusted to 1pm UTC
     status: ReservationStatus.IN_PROGRESS,
     patientName: "Jane Smith",
     patientId: "pat002",
@@ -38,8 +38,8 @@ export const appointmentEvents: Appointment[] = [
     dentistId: "42",
     appointmentId: "apt004",
     appointmentDate: "2024-07-18",
-    start: "2024-07-14T09:00:00Z", // Adjusted to 9am UTC
-    end: "2024-07-14T10:00:00Z", // Adjusted to 10am UTC
+    start: "2024-07-15T09:00:00Z", // Adjusted to 9am UTC
+    end: "2024-07-15T10:00:00Z", // Adjusted to 10am UTC
     status: ReservationStatus.FINISHED,
     patientName: "Alice Brown",
     patientId: "pat004",
@@ -52,8 +52,8 @@ export const appointmentEvents: Appointment[] = [
     dentistId: "19",
     appointmentId: "apt005",
     appointmentDate: "2024-07-19",
-    start: "2024-07-14T07:00:00Z", // Adjusted to 3pm UTC
-    end: "2024-07-14T08:00:00Z", // Adjusted to 4pm UTC
+    start: "2024-07-15T07:00:00Z", // Adjusted to 3pm UTC
+    end: "2024-07-15T08:00:00Z", // Adjusted to 4pm UTC
     status: ReservationStatus.REGISTERED,
     patientName: "Charlie Davis",
     patientId: "pat005",
@@ -66,8 +66,8 @@ export const appointmentEvents: Appointment[] = [
     dentistId: ["84", "19"],
     appointmentId: "apt006",
     appointmentDate: "2024-07-20",
-    start: "2024-07-14T02:00:00Z", // Adjusted to 1pm UTC
-    end: "2024-07-14T03:00:00Z", // Adjusted to 2pm UTC
+    start: "2024-07-15T02:00:00Z", // Adjusted to 1pm UTC
+    end: "2024-07-15T03:00:00Z", // Adjusted to 2pm UTC
     status: ReservationStatus.REGISTERED,
     patientName: "Diana Evans",
     patientId: "pat006",
@@ -82,8 +82,8 @@ export const BlockedEvents = [
   {
     title: "Break Time",
     resourceId: ["84"],
-    start: parseISO("2024-07-14T02:00:00Z"), // Adjusted to 1pm UTC
-    end: parseISO("2024-07-14T03:00:00Z"), // Adjusted to 2pm UTC
+    start: parseISO("2024-07-15T02:00:00Z"), // Adjusted to 1pm UTC
+    end: parseISO("2024-07-15T03:00:00Z"), // Adjusted to 2pm UTC
   },
 ];
 
@@ -94,8 +94,8 @@ export const BackgroundEvents: Appointment[] = [
     dentistId: "42",
     appointmentId: "apt002",
     appointmentDate: "2024-07-16",
-    start: "2024-07-14T01:00:00Z", // Adjusted to 8am UTC
-    end: "2024-07-14T03:00:00Z", // Adjusted to 9am UTC
+    start: "2024-07-15T01:00:00Z", // Adjusted to 8am UTC
+    end: "2024-07-15T03:00:00Z", // Adjusted to 9am UTC
     status: ReservationStatus.IN_PROGRESS,
     patientName: "Jane Smith",
     patientId: "pat002",

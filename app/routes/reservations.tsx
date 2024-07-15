@@ -29,13 +29,22 @@ type TimeSlotWrapperProps = {
   resource: string;
 };
 
+const initialState = {
+  selectedSlot: {
+    selectedDate: "2024-07-14T14:00:00+08:00",
+    selectedDentistId: "42",
+  },
+};
+
 export default function Reservations() {
   const [events, setEvents] = useState([
     ...appointmentEvents,
     ...BackgroundEvents,
   ]);
-  const [open, setOpen] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState<EventCardEvent | null>(null);
+  const [open, setOpen] = useState(true);
+  const [selectedSlot, setSelectedSlot] = useState<EventCardEvent>(
+    initialState.selectedSlot,
+  );
 
   const onAddEvent = ({ selectedDate, selectedDentistId }: EventCardEvent) => {
     setSelectedSlot({ selectedDate, selectedDentistId });
@@ -66,7 +75,6 @@ export default function Reservations() {
       //   console.log(props);
       // }
       // Library didn't typed timeSlotWrapper
-      // eslint-disable-next-line react/prop-types
       const {
         children,
         value: selectedDate,

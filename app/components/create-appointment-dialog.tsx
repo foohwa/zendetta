@@ -10,6 +10,9 @@ import { IconX } from "@tabler/icons-react";
 import { TreatmentAndDentistPage } from "~/components/reservations/treatment-and-dentist";
 import { EventCardEvent } from "~/components/add-event-card";
 import { useState } from "react";
+import { BasicInformation } from "~/components/reservations/basic-information";
+import { OralHygieneQuestionnaire } from "~/components/reservations/oral-hygiene-questionnaire";
+import { Stepper } from "~/components/reservations/stepper";
 
 type CreateAppointmentDialogProps = {
   open: boolean;
@@ -24,7 +27,6 @@ export const CreateAppointmentDialogComponent = ({
 }: CreateAppointmentDialogProps) => {
   const MIN_STEP = 1;
   const MAX_STEP = 3;
-
   const [step, setStep] = useState(MIN_STEP);
 
   const nextStep = () => {
@@ -40,9 +42,9 @@ export const CreateAppointmentDialogComponent = ({
       case 1:
         return <TreatmentAndDentistPage {...selectedSlot} />;
       case 2:
-        break;
+        return <BasicInformation />;
       case 3:
-        break;
+        return <OralHygieneQuestionnaire />;
       default:
         return null;
     }
@@ -95,57 +97,47 @@ export const CreateAppointmentDialogComponent = ({
                     </div>
                     <div className="relative mt-2 flex flex-1 flex-col px-4">
                       {/* Tab */}
-                      <ul className="steps my-4">
-                        <li className="step">
-                          <div className="mt-1">
-                            <span className="text-xs font-medium uppercase tracking-tight text-gray-400">
-                              Step 1
-                            </span>
-                            <p className="text-sm font-semibold leading-tight tracking-tight">
-                              Treatment & Dentist
-                            </p>
-                          </div>
-                        </li>
-                        <li className="step">
-                          <div className="mt-1">
-                            <span className="text-xs font-medium uppercase tracking-tight text-gray-400">
-                              Step 2
-                            </span>
-                            <p className="text-sm font-semibold leading-tight tracking-tight">
-                              Basic Information
-                            </p>
-                          </div>
-                        </li>
-                        <li className="step">
-                          <div className="mt-1">
-                            <span className="text-xs font-medium uppercase tracking-tight text-gray-400">
-                              Step 3
-                            </span>
-                            <p className="text-sm font-semibold leading-tight tracking-tight">
-                              Oral Hygiene habits
-                            </p>
-                          </div>
-                        </li>
-                      </ul>
+                      <Stepper step={step} />
 
                       {/* Tab Content */}
                       <div className="pb-2">{renderForm(step)}</div>
                     </div>
 
                     {/* Footer */}
-                    <div className="sticky bottom-0 flex flex-row-reverse border-t-[0.5px] bg-gray-50 px-6 py-4">
-                      <button
-                        type="button"
-                        onClick={() => nextStep()}
-                        className="ml-3 inline-flex w-auto justify-center rounded-md bg-secondary px-12 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondary/80"
-                      >
-                        Next
-                      </button>
+                    <div className="sticky bottom-0 flex flex-row-reverse gap-3 border-t-[0.5px] bg-gray-50 px-6 py-4">
+                      {step === MAX_STEP ? (
+                        <button
+                          type="button"
+                          onClick={() => nextStep()}
+                          className="inline-flex w-auto justify-center rounded-md bg-secondary px-12 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondary/80"
+                        >
+                          Save
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => nextStep()}
+                          className="inline-flex w-auto justify-center rounded-md bg-secondary px-12 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondary/80"
+                        >
+                          Next
+                        </button>
+                      )}
+
+                      {step >= 2 && (
+                        <button
+                          type="button"
+                          data-autofocus
+                          onClick={() => prevStep()}
+                          className="inline-flex w-auto justify-center rounded-md bg-white px-10 py-2 text-sm font-semibold text-secondary shadow-sm ring-1 ring-inset ring-gray-500/15 hover:bg-gray-50"
+                        >
+                          Previous
+                        </button>
+                      )}
                       <button
                         type="button"
                         data-autofocus
                         onClick={() => onClose(false)}
-                        className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                        className="inline-flex w-full justify-center px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                       >
                         Cancel
                       </button>
