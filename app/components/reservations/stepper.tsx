@@ -7,7 +7,12 @@ interface StepperProps {
 export const Stepper = ({ step }: StepperProps) => {
   return (
     <ul className="steps my-4">
-      <li className={cn(step && "step-primary", "step")}>
+      <li
+        className={cn(
+          step && "step-secondary",
+          "step before:!h-1.5 before:!w-3/5 before:rounded",
+        )}
+      >
         <div className="mt-1">
           <span className="text-xs font-medium uppercase tracking-tight text-gray-400">
             Step 1
@@ -17,7 +22,12 @@ export const Stepper = ({ step }: StepperProps) => {
           </p>
         </div>
       </li>
-      <li className={cn(step >= 2 && "step-primary", "step")}>
+      <li
+        className={cn(
+          step >= 2 && "step-secondary",
+          "step before:!h-1.5 before:!w-3/5 before:rounded after:!border after:!bg-white",
+        )}
+      >
         <div className="mt-1">
           <span className="text-xs font-medium uppercase tracking-tight text-gray-400">
             Step 2
@@ -27,7 +37,12 @@ export const Stepper = ({ step }: StepperProps) => {
           </p>
         </div>
       </li>
-      <li className={cn(step === 3 && "step-primary", "step")}>
+      <li
+        className={cn(
+          step === 3 && "step-secondary",
+          "step before:!h-1.5 before:!w-3/5 before:rounded",
+        )}
+      >
         <div className="mt-1">
           <span className="text-xs font-medium uppercase tracking-tight text-gray-400">
             Step 3

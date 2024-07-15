@@ -6,13 +6,18 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { IconX } from "@tabler/icons-react";
+import {
+  IconClipboardText,
+  IconDental,
+  IconSparkles,
+  IconX,
+} from "@tabler/icons-react";
 import { TreatmentAndDentistPage } from "~/components/reservations/treatment-and-dentist";
 import { EventCardEvent } from "~/components/add-event-card";
 import { useState } from "react";
 import { BasicInformation } from "~/components/reservations/basic-information";
 import { OralHygieneQuestionnaire } from "~/components/reservations/oral-hygiene-questionnaire";
-import { Stepper } from "~/components/reservations/stepper";
+import { Stepper2 } from "~/components/steppers";
 
 type CreateAppointmentDialogProps = {
   open: boolean;
@@ -49,6 +54,27 @@ export const CreateAppointmentDialogComponent = ({
         return null;
     }
   };
+
+  const steps = [
+    {
+      icon: <IconDental />,
+      title: "Treatment & Dentist",
+      status: "pending",
+      isActive: true,
+    },
+    {
+      icon: <IconClipboardText />,
+      title: "Basic Information",
+      status: "pending",
+      isActive: false,
+    },
+    {
+      icon: <IconSparkles />,
+      title: "Oral Hygiene habits",
+      status: "pending",
+      isActive: false,
+    },
+  ];
 
   return (
     <Transition appear={true} show={open}>
@@ -97,8 +123,9 @@ export const CreateAppointmentDialogComponent = ({
                     </div>
                     <div className="relative mt-2 flex flex-1 flex-col px-4">
                       {/* Tab */}
-                      <Stepper step={step} />
+                      {/*<Stepper step={step} />*/}
 
+                      <Stepper2 steps={steps} />
                       {/* Tab Content */}
                       <div className="pb-2">{renderForm(step)}</div>
                     </div>
