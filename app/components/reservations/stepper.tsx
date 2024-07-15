@@ -4,7 +4,7 @@ interface StepperProps {
   step: number;
 }
 
-export const Stepper = ({ step }: StepperProps) => {
+export const Stepper2 = ({ step }: StepperProps) => {
   return (
     <ul className="steps my-4">
       <li

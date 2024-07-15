@@ -17,7 +17,29 @@ import { EventCardEvent } from "~/components/add-event-card";
 import { useState } from "react";
 import { BasicInformation } from "~/components/reservations/basic-information";
 import { OralHygieneQuestionnaire } from "~/components/reservations/oral-hygiene-questionnaire";
-import { Stepper2 } from "~/components/steppers";
+import { Stepper, StepProps } from "~/components/steppers";
+import { Stepper2 } from "./reservations/stepper";
+
+const initialSteps: Omit<StepProps, "isLast">[] = [
+  {
+    icon: <IconDental />,
+    title: "Treatment & Dentist",
+    status: "started",
+    isActive: true,
+  },
+  {
+    icon: <IconClipboardText />,
+    title: "Basic Information",
+    status: "pending",
+    isActive: false,
+  },
+  {
+    icon: <IconSparkles />,
+    title: "Oral Hygiene habits",
+    status: "pending",
+    isActive: false,
+  },
+];
 
 type CreateAppointmentDialogProps = {
   open: boolean;
@@ -33,6 +55,7 @@ export const CreateAppointmentDialogComponent = ({
   const MIN_STEP = 1;
   const MAX_STEP = 3;
   const [step, setStep] = useState(MIN_STEP);
+  // const [steps, setSteps] = useState(initialSteps);
 
   const nextStep = () => {
     setStep((prevStep) => Math.min(prevStep + 1, MAX_STEP));
@@ -54,27 +77,6 @@ export const CreateAppointmentDialogComponent = ({
         return null;
     }
   };
-
-  const steps = [
-    {
-      icon: <IconDental />,
-      title: "Treatment & Dentist",
-      status: "pending",
-      isActive: true,
-    },
-    {
-      icon: <IconClipboardText />,
-      title: "Basic Information",
-      status: "pending",
-      isActive: false,
-    },
-    {
-      icon: <IconSparkles />,
-      title: "Oral Hygiene habits",
-      status: "pending",
-      isActive: false,
-    },
-  ];
 
   return (
     <Transition appear={true} show={open}>
@@ -123,11 +125,11 @@ export const CreateAppointmentDialogComponent = ({
                     </div>
                     <div className="relative mt-2 flex flex-1 flex-col px-4">
                       {/* Tab */}
-                      {/*<Stepper step={step} />*/}
+                      {/* <Stepper2 step={step} /> */}
 
-                      <Stepper2 steps={steps} />
+                      <Stepper steps={initialSteps} currentStep={step} />
                       {/* Tab Content */}
-                      <div className="pb-2">{renderForm(step)}</div>
+                      <div className="mt-12 pb-2">{renderForm(step)}</div>
                     </div>
 
                     {/* Footer */}
