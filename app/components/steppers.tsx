@@ -4,7 +4,7 @@ import { cn } from "~/lib/util";
 
 type StepStatus = "completed" | "error" | "started" | "pending";
 
-export interface StepProps {
+interface InternalStepProps {
   icon: ReactElement;
   title: string;
   status: StepStatus;
@@ -13,7 +13,9 @@ export interface StepProps {
   index: number;
 }
 
-const Step: FC<StepProps> = ({
+export type StepProps = Omit<InternalStepProps, "isLast" | "index">;
+
+const Step: FC<InternalStepProps> = ({
   icon,
   title,
   status,
@@ -49,7 +51,7 @@ const Step: FC<StepProps> = ({
       case "error":
         return "w-full bg-red-500";
       case "started":
-        return "w-1/2 bg-blue-600";
+        return "w-1/2 bg-blue-600 [&:not(:nth-last-child(n+2))]:delay-200";
       default:
         return "w-0 bg-blue-600";
     }
@@ -116,7 +118,7 @@ const Step: FC<StepProps> = ({
 
 export interface StepperProps {
   currentStep: number;
-  steps: Array<Omit<StepProps, "isLast">>;
+  steps: StepProps[];
 }
 
 export const Stepper: React.FC<StepperProps> = ({ steps, currentStep }) => {

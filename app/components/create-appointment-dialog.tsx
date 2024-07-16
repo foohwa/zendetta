@@ -18,9 +18,8 @@ import { useState } from "react";
 import { BasicInformation } from "~/components/reservations/basic-information";
 import { OralHygieneQuestionnaire } from "~/components/reservations/oral-hygiene-questionnaire";
 import { Stepper, StepProps } from "~/components/steppers";
-import { Stepper2 } from "./reservations/stepper";
 
-const initialSteps: Omit<StepProps, "isLast">[] = [
+const initialSteps: StepProps[] = [
   {
     icon: <IconDental />,
     title: "Treatment & Dentist",
