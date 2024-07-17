@@ -20,19 +20,22 @@ import { TimePicker } from "~/components/reservations/time-picker";
 import { dentists } from "~/resources/mock-data/doctorsMockData";
 import { ISODateTime } from "~/types";
 import { addHours, format, parseISO } from "date-fns";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export type Treatment = {
-  id: number;
+  id: string;
   name: string;
 };
 
 // TODO: move this mock data to somewhere else
 const treatment: Treatment[] = [
-  { id: 1, name: "General Checking" },
-  { id: 2, name: "Tooth Scaling" },
-  { id: 3, name: "Tooth Extraction" },
-  { id: 4, name: "Tooth Braces (Metal)" },
-  { id: 5, name: "Tooth Polishing" },
+  { id: "1", name: "General Checking" },
+  { id: "2", name: "Tooth Scaling" },
+  { id: "3", name: "Tooth Extraction" },
+  { id: "4", name: "Tooth Braces (Metal)" },
+  { id: "5", name: "Tooth Polishing" },
 ];
 
 type TreatmentAndDentistProps = {
@@ -40,10 +43,31 @@ type TreatmentAndDentistProps = {
   selectedDate: ISODateTime;
 };
 
+const TreatmentAndDentistFormSchema = z.object({
+  treatment: z.string().array(),
+  dentist: z.string(),
+  date: z.date(),
+  note: z.string().optional(),
+  files: z.string().array().optional(),
+});
+
+type TreatmentAndDentistFormValues = z.infer<
+  typeof TreatmentAndDentistFormSchema
+>;
+
 export const TreatmentAndDentistPage = ({
   selectedDentistId,
   selectedDate,
 }: TreatmentAndDentistProps) => {
+  const { register, setValue, handleSubmit, formState } =
+    useForm<TreatmentAndDentistFormValues>({
+      defaultValues: {
+        dentist: selectedDentistId,
+        date: parseISO(selectedDate),
+      },
+      resolver: zodResolver(TreatmentAndDentistFormSchema),
+    });
+
   const [selectedTreatment, setSelectedTreatment] = useState<
     Treatment[] | null[] | undefined
   >([]);
@@ -66,6 +90,9 @@ export const TreatmentAndDentistPage = ({
         });
 
   // console.log(filteredPeople);
+  const onSubmit = (data: TreatmentAndDentistFormValues) => {
+    console.log(data);
+  };
 
   return (
     <>
@@ -74,7 +101,10 @@ export const TreatmentAndDentistPage = ({
       {/*  Save changes*/}
       {/*</Button>*/}
 
-      <div className="grid grid-cols-1 gap-x-6 gap-y-6">
+      <form
+        className="grid grid-cols-1 gap-x-6 gap-y-6"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <Field>
           <Label className="text-xs/6 font-medium tracking-tight">
             Treatment
@@ -82,7 +112,13 @@ export const TreatmentAndDentistPage = ({
           <Combobox
             multiple
             value={selectedTreatment}
-            onChange={setSelectedTreatment}
+            onChange={(treatments: Treatment[] | null[]) => {
+              const treatmentIds = treatments
+                .filter((treatment) => treatment !== null)
+                .map((treatment) => treatment.id);
+              setSelectedTreatment(treatments);
+              setValue("treatment", treatmentIds);
+            }}
             onClose={() => setQuery("")}
           >
             <div className="relative mt-1">
@@ -187,6 +223,7 @@ export const TreatmentAndDentistPage = ({
             Quick Note <span className="text-gray-400">(Optional)</span>
           </Label>
           <Textarea
+            {...register("note")}
             className="mt-1 block w-full resize-y rounded-lg border border-gray-500/15 bg-white/5 px-3 py-1.5 text-sm/6 focus:outline-none data-[focus]:border-primary data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25 data-[focus]:ring-primary"
             rows={3}
           />
@@ -223,11 +260,18 @@ export const TreatmentAndDentistPage = ({
             </div>
           </div>
           <div className="mt-1 flex justify-between text-xs leading-6 text-gray-500">
-            <p>Maximum upload file sizes: 10MB</p>
+            <button
+              type="submit"
+              onClick={() => {
+                console.log(formState.isValid);
+              }}
+            >
+              Maximum upload file sizes: 10MB
+            </button>
             <p>0 of 5</p>
           </div>
         </Field>
-      </div>
+      </form>
     </>
   );
 };

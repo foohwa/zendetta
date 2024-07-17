@@ -124,9 +124,8 @@ export const CreateAppointmentDialogComponent = ({
                     </div>
                     <div className="relative mt-2 flex flex-1 flex-col px-4">
                       {/* Tab */}
-                      {/* <Stepper2 step={step} /> */}
-
                       <Stepper steps={initialSteps} currentStep={step} />
+
                       {/* Tab Content */}
                       <div className="mt-12 pb-2">{renderForm(step)}</div>
                     </div>
