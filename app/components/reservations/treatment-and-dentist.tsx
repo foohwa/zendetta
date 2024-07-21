@@ -21,8 +21,7 @@ import { dentists } from "~/resources/mock-data/doctorsMockData";
 import { ISODateTime } from "~/types";
 import { addHours, format, parseISO } from "date-fns";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useRemixFormContext } from "remix-hook-form";
 
 export type Treatment = {
   id: string;
@@ -43,15 +42,15 @@ type TreatmentAndDentistProps = {
   selectedDate: ISODateTime;
 };
 
-const TreatmentAndDentistFormSchema = z.object({
+export const TreatmentAndDentistFormSchema = z.object({
   treatment: z.string().array(),
   dentist: z.string(),
-  date: z.date(),
+  date: z.string(),
   note: z.string().optional(),
   files: z.string().array().optional(),
 });
 
-type TreatmentAndDentistFormValues = z.infer<
+export type TreatmentAndDentistFormValues = z.infer<
   typeof TreatmentAndDentistFormSchema
 >;
 
@@ -59,14 +58,11 @@ export const TreatmentAndDentistPage = ({
   selectedDentistId,
   selectedDate,
 }: TreatmentAndDentistProps) => {
-  const { register, setValue, handleSubmit, formState } =
-    useForm<TreatmentAndDentistFormValues>({
-      defaultValues: {
-        dentist: selectedDentistId,
-        date: parseISO(selectedDate),
-      },
-      resolver: zodResolver(TreatmentAndDentistFormSchema),
-    });
+  const { register, setValue } =
+    useRemixFormContext<TreatmentAndDentistFormValues>();
+
+  setValue("dentist", selectedDentistId);
+  setValue("date", selectedDate);
 
   const [selectedTreatment, setSelectedTreatment] = useState<
     Treatment[] | null[] | undefined
@@ -89,22 +85,9 @@ export const TreatmentAndDentistPage = ({
           return treatment.name.toLowerCase().includes(query.toLowerCase());
         });
 
-  // console.log(filteredPeople);
-  const onSubmit = (data: TreatmentAndDentistFormValues) => {
-    console.log(data);
-  };
-
   return (
     <>
-      {/*<Example />*/}
-      {/*<Button className="inline-flex items-center gap-2 rounded-md bg-gray-700 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white">*/}
-      {/*  Save changes*/}
-      {/*</Button>*/}
-
-      <form
-        className="grid grid-cols-1 gap-x-6 gap-y-6"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <div className="grid grid-cols-1 gap-x-6 gap-y-6">
         <Field>
           <Label className="text-xs/6 font-medium tracking-tight">
             Treatment
@@ -260,18 +243,11 @@ export const TreatmentAndDentistPage = ({
             </div>
           </div>
           <div className="mt-1 flex justify-between text-xs leading-6 text-gray-500">
-            <button
-              type="submit"
-              onClick={() => {
-                console.log(formState.isValid);
-              }}
-            >
-              Maximum upload file sizes: 10MB
-            </button>
+            <button type="submit">Maximum upload file sizes: 10MB</button>
             <p>0 of 5</p>
           </div>
         </Field>
-      </form>
+      </div>
     </>
   );
 };

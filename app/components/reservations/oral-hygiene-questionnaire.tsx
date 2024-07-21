@@ -2,6 +2,16 @@ import { IconHelp } from "@tabler/icons-react";
 import { Field, Label, Radio, RadioGroup } from "@headlessui/react";
 import { HygieneQuestionnaire } from "~/types/question";
 import { questionnaire } from "~/resources/mock-data/hygiene-questionnaire";
+import { z } from "zod";
+import { useRemixFormContext } from "remix-hook-form";
+
+export const OralHygieneQuestionnaireSchema = z.object({
+  questionnaire: z.string().array().optional(),
+});
+
+export type OralHygieneQuestionnaireFormValues = z.infer<
+  typeof OralHygieneQuestionnaireSchema
+>;
 
 export const OralHygieneQuestionnaire = () => {
   return (
@@ -33,13 +43,21 @@ interface QuestionnaireProps {
 }
 
 const Questionnaire = ({ questionnaire, index }: QuestionnaireProps) => {
+  const { setValue } =
+    useRemixFormContext<OralHygieneQuestionnaireFormValues>();
+
   return (
     <>
       <Field>
         <Label className="text-sm/6 font-medium tracking-tight">
           {`${index + 1}. ${questionnaire.question}`}
         </Label>
-        <RadioGroup className="mt-2 grid grid-cols-2 gap-2">
+        <RadioGroup
+          onChange={(answer) => {
+            setValue("questionnaire", [...answer]);
+          }}
+          className="mt-2 grid grid-cols-2 gap-2"
+        >
           {questionnaire.options.map((option, index) => (
             <Radio
               key={index}

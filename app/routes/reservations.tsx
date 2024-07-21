@@ -22,6 +22,7 @@ import {
   EventCardEvent,
 } from "~/components/add-event-card";
 import { CreateAppointmentDialogComponent } from "~/components/create-appointment-dialog";
+import { useNavigate } from "react-router";
 
 type TimeSlotWrapperProps = {
   children: ReactElement;
@@ -41,15 +42,17 @@ export default function Reservations() {
     ...appointmentEvents,
     ...BackgroundEvents,
   ]);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<EventCardEvent>(
     initialState.selectedSlot,
   );
 
   const onAddEvent = ({ selectedDate, selectedDentistId }: EventCardEvent) => {
     setSelectedSlot({ selectedDate, selectedDentistId });
+    navigate("new");
     setOpen(true);
   };
+  const navigate = useNavigate();
 
   const components: Components<Appointment, AppointmentCalendarHeader> = {
     event: ({ event, ...rest }) => {
@@ -164,7 +167,9 @@ export default function Reservations() {
           <CreateAppointmentDialogComponent
             open={open}
             selectedSlot={selectedSlot}
-            onClose={(value) => setOpen(value)}
+            onClose={(value) => {
+              setOpen(value);
+            }}
           />
         )}
       </div>

@@ -16,15 +16,30 @@ import { patients } from "~/resources/mock-data/patients";
 import { cn } from "~/lib/util";
 import { Patient } from "~/types/patient";
 import { IconMail, IconPhone } from "@tabler/icons-react";
+import { z } from "zod";
+import { useRemixFormContext } from "remix-hook-form";
 
-export type BasicInformationProps = {};
+export const BasicInformationFormSchema = z.object({
+  patientId: z.string(),
+  age: z.string(),
+  gender: z.string(),
+  email: z.string(),
+  phoneNumber: z.string(),
+  address: z.string(),
+});
+
+type BasicInformationFormValues = z.infer<typeof BasicInformationFormSchema>;
 
 export const BasicInformation = () => {
+  const { register, setValue } =
+    useRemixFormContext<BasicInformationFormValues>();
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [selectedGender, setSelectedGender] = useState<"male" | "female">(
     "male",
   );
   const [query, setQuery] = useState("");
+
+  setValue("gender", selectedGender);
 
   const filteredPatient =
     query === ""
@@ -43,7 +58,10 @@ export const BasicInformation = () => {
           </Label>
           <Combobox
             value={selectedPatient}
-            onChange={setSelectedPatient}
+            onChange={(patient: Patient) => {
+              setSelectedPatient(patient);
+              setValue("patientId", patient.id);
+            }}
             onClose={() => setQuery("")}
           >
             <div className="relative mt-1">
@@ -93,9 +111,8 @@ export const BasicInformation = () => {
           <Field className="flex-1">
             <Label className="text-xs/6 font-medium tracking-tight">Age</Label>
             <Input
+              {...register("age")}
               className="mt-1 w-full rounded-lg border border-gray-500/15 py-1.5 pl-3 pr-8 text-sm/6 text-black"
-              name="age"
-              type="text"
               placeholder="Age"
             />
           </Field>
@@ -106,7 +123,10 @@ export const BasicInformation = () => {
             </Label>
             <RadioGroup
               value={selectedGender}
-              onChange={setSelectedGender}
+              onChange={(gender) => {
+                setSelectedGender(gender);
+                setValue("gender", gender);
+              }}
               className="mt-1 flex gap-2"
             >
               <Radio
@@ -154,10 +174,8 @@ export const BasicInformation = () => {
               <IconMail aria-hidden="true" className="h-5 w-5 text-gray-400" />
             </div>
             <Input
+              {...register("email")}
               className="block w-full rounded-lg border border-gray-500/15 py-1.5 pl-10 pr-8 text-sm/6 text-black"
-              id="email"
-              name="email"
-              type="email"
               placeholder="Enter your email here"
             />
           </div>
@@ -172,10 +190,8 @@ export const BasicInformation = () => {
               <IconPhone aria-hidden="true" className="h-5 w-5 text-gray-400" />
             </div>
             <Input
+              {...register("phoneNumber")}
               className="block w-full rounded-lg border border-gray-500/15 py-1.5 pl-10 pr-8 text-sm/6 text-black"
-              id="phone-number"
-              name="phone-number"
-              type="text"
               placeholder="010 9473669"
             />
           </div>
@@ -186,6 +202,7 @@ export const BasicInformation = () => {
             Address
           </Label>
           <Textarea
+            {...register("address")}
             className="mt-1 block w-full resize-y rounded-lg border border-gray-500/15 bg-white/5 px-3 py-1.5 text-sm/6 focus:outline-none data-[focus]:border-primary data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25 data-[focus]:ring-primary"
             rows={3}
           />

@@ -136,7 +136,7 @@ export const Stepper: React.FC<StepperProps> = ({ steps, currentStep }) => {
             status={status}
             isActive={isActive}
             isLast={index === steps.length - 1}
-            index={index + 1}
+            index={index}
           />
         );
       })}
@@ -145,9 +145,9 @@ export const Stepper: React.FC<StepperProps> = ({ steps, currentStep }) => {
 };
 
 const getStepStatus = (index: number, currentStep: number): StepStatus => {
-  if (index + 1 < currentStep) {
+  if (index < currentStep) {
     return "completed";
-  } else if (index + 1 === currentStep) {
+  } else if (index === currentStep) {
     return "started";
   } else {
     return "pending";
@@ -155,5 +155,5 @@ const getStepStatus = (index: number, currentStep: number): StepStatus => {
 };
 
 const isStepActive = (index: number, currentStep: number): boolean => {
-  return index + 1 === currentStep;
+  return index === currentStep;
 };

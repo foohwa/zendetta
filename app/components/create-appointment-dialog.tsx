@@ -5,6 +5,7 @@ import {
   DialogTitle,
   Transition,
   TransitionChild,
+  useClose,
 } from "@headlessui/react";
 import {
   IconClipboardText,
@@ -12,12 +13,25 @@ import {
   IconSparkles,
   IconX,
 } from "@tabler/icons-react";
-import { TreatmentAndDentistPage } from "~/components/reservations/treatment-and-dentist";
+import {
+  TreatmentAndDentistFormSchema,
+  TreatmentAndDentistPage,
+} from "~/components/reservations/treatment-and-dentist";
 import { EventCardEvent } from "~/components/add-event-card";
 import { useState } from "react";
-import { BasicInformation } from "~/components/reservations/basic-information";
-import { OralHygieneQuestionnaire } from "~/components/reservations/oral-hygiene-questionnaire";
+import {
+  BasicInformation,
+  BasicInformationFormSchema,
+} from "~/components/reservations/basic-information";
+import {
+  OralHygieneQuestionnaire,
+  OralHygieneQuestionnaireSchema,
+} from "~/components/reservations/oral-hygiene-questionnaire";
 import { Stepper, StepProps } from "~/components/steppers";
+import { RemixFormProvider, useRemixForm } from "remix-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form } from "@remix-run/react";
+import { useNavigate } from "react-router";
 
 const initialSteps: StepProps[] = [
   {
@@ -51,26 +65,54 @@ export const CreateAppointmentDialogComponent = ({
   onClose,
   selectedSlot,
 }: CreateAppointmentDialogProps) => {
-  const MIN_STEP = 1;
-  const MAX_STEP = 3;
-  const [step, setStep] = useState(MIN_STEP);
-  // const [steps, setSteps] = useState(initialSteps);
+  const MIN_STEP = 0;
+  const MAX_STEP = 2;
+  const [activeStep, setActiveStep] = useState(MIN_STEP);
+  const navigate = useNavigate();
+  const close = useClose();
 
-  const nextStep = () => {
-    setStep((prevStep) => Math.min(prevStep + 1, MAX_STEP));
+  const validationSchema = [
+    TreatmentAndDentistFormSchema,
+    BasicInformationFormSchema,
+    OralHygieneQuestionnaireSchema,
+  ];
+  const currentValidationSchema = validationSchema[activeStep];
+
+  const methods = useRemixForm({
+    shouldUnregister: false,
+    resolver: zodResolver(currentValidationSchema),
+    mode: "onSubmit",
+  });
+  const { handleSubmit, reset, trigger, getValues } = methods;
+
+  // const isLastStep = activeStep === steps.length - 1;
+
+  const handleNext = async () => {
+    console.log(getValues());
+    const isStepValid = await trigger();
+    console.log(isStepValid);
+    if (isStepValid) setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const prevStep = () => {
-    setStep((prevStep) => Math.max(prevStep - 1, MIN_STEP));
+  const handlePrevious = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const renderForm = (step: number) => {
-    switch (step) {
-      case 1:
+  // const nextStep = () => {
+  //   setStep((prevStep) => Math.min(prevStep + 1, MAX_STEP));
+  // };
+  //
+  // const prevStep = () => {
+  //   setStep((prevStep) => Math.max(prevStep - 1, MIN_STEP));
+  // };
+
+  const renderStep = () => {
+    switch (activeStep) {
+      case 0:
         return <TreatmentAndDentistPage {...selectedSlot} />;
-      case 2:
+      case 1:
         return <BasicInformation />;
-      case 3:
+      case 2:
         return <OralHygieneQuestionnaire />;
       default:
         return null;
@@ -79,7 +121,13 @@ export const CreateAppointmentDialogComponent = ({
 
   return (
     <Transition appear={true} show={open}>
-      <Dialog className="relative z-10" onClose={(value) => onClose(value)}>
+      <Dialog
+        className="relative z-10"
+        onClose={(value) => {
+          navigate(-1);
+          onClose(value);
+        }}
+      >
         <TransitionChild
           enter="ease-in-out duration-500"
           enterFrom="opacity-0"
@@ -122,53 +170,63 @@ export const CreateAppointmentDialogComponent = ({
                         </CloseButton>
                       </TransitionChild>
                     </div>
-                    <div className="relative mt-2 flex flex-1 flex-col px-4">
-                      {/* Tab */}
-                      <Stepper steps={initialSteps} currentStep={step} />
+                    <RemixFormProvider {...methods}>
+                      <Form method="POST" onSubmit={handleSubmit}>
+                        <div className="relative mt-2 flex flex-1 flex-col px-4">
+                          {/* Tab */}
+                          <Stepper
+                            steps={initialSteps}
+                            currentStep={activeStep}
+                          />
 
-                      {/* Tab Content */}
-                      <div className="mt-12 pb-2">{renderForm(step)}</div>
-                    </div>
+                          {/* Tab Content */}
+                          <div className="mt-12 pb-2">{renderStep()}</div>
+                        </div>
 
-                    {/* Footer */}
-                    <div className="sticky bottom-0 flex flex-row-reverse gap-3 border-t-[0.5px] bg-gray-50 px-6 py-4">
-                      {step === MAX_STEP ? (
-                        <button
-                          type="button"
-                          onClick={() => nextStep()}
-                          className="inline-flex w-auto justify-center rounded-md bg-secondary px-12 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondary/80"
-                        >
-                          Save
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => nextStep()}
-                          className="inline-flex w-auto justify-center rounded-md bg-secondary px-12 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondary/80"
-                        >
-                          Next
-                        </button>
-                      )}
+                        {/* Footer */}
+                        <div className="sticky bottom-0 flex flex-row-reverse gap-3 border-t-[0.5px] bg-gray-50 px-6 py-4">
+                          {activeStep === MAX_STEP ? (
+                            <button
+                              type="submit"
+                              // onClick={() => nextStep()}
+                              className="inline-flex w-auto justify-center rounded-md bg-secondary px-12 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondary/80"
+                            >
+                              Save
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => handleNext()}
+                              className="inline-flex w-auto justify-center rounded-md bg-secondary px-12 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondary/80"
+                            >
+                              Next
+                            </button>
+                          )}
 
-                      {step >= 2 && (
-                        <button
-                          type="button"
-                          data-autofocus
-                          onClick={() => prevStep()}
-                          className="inline-flex w-auto justify-center rounded-md bg-white px-10 py-2 text-sm font-semibold text-secondary shadow-sm ring-1 ring-inset ring-gray-500/15 hover:bg-gray-50"
-                        >
-                          Previous
-                        </button>
-                      )}
-                      <button
-                        type="button"
-                        data-autofocus
-                        onClick={() => onClose(false)}
-                        className="inline-flex w-full justify-center px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                      >
-                        Cancel
-                      </button>
-                    </div>
+                          {activeStep >= 1 && (
+                            <button
+                              type="button"
+                              data-autofocus
+                              onClick={() => handlePrevious()}
+                              className="inline-flex w-auto justify-center rounded-md bg-white px-10 py-2 text-sm font-semibold text-secondary shadow-sm ring-1 ring-inset ring-gray-500/15 hover:bg-gray-50"
+                            >
+                              Previous
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            data-autofocus
+                            onClick={() => {
+                              close();
+                              onClose(false);
+                            }}
+                            className="inline-flex w-full justify-center px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </Form>
+                    </RemixFormProvider>
                   </div>
                 </DialogPanel>
               </TransitionChild>
