@@ -1,18 +1,20 @@
-import { AppointmentCalendarHeader } from "~/types";
 import { IconDots } from "@tabler/icons-react";
+import { Dentist } from "~/db/schema";
 
 export const DoctorResourceHeader = ({
   avatarUrl,
   totalOfTodayAppointment,
   firstName,
   lastName,
-}: AppointmentCalendarHeader) => {
+}: Dentist & { totalOfTodayAppointment: number }) => {
   return (
     <>
       <div className="relative flex h-[60px] w-full items-center gap-3 px-4 py-2">
         <div className="avatar">
           <div className="mask mask-circle size-10">
-            <img src={avatarUrl} alt="Avatar Tailwind CSS Component" />
+            {avatarUrl && (
+              <img src={avatarUrl} alt="Avatar Tailwind CSS Component" />
+            )}
           </div>
         </div>
         <div className="text-start">

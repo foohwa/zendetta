@@ -1,4 +1,10 @@
-import { ISODate, ISODateTime, Treatment } from "~/types";
+import {
+  Appointment as SchemaAppointment,
+  Dentist,
+  Patient,
+  Treatment,
+} from "~/db/schema";
+import { ISODate, ISODateTime } from "~/types/date";
 
 export interface Appointment {
   appointmentId: string;
@@ -11,6 +17,12 @@ export interface Appointment {
   treatment?: Treatment;
   dentistId: string | string[];
 }
+
+export type AppointmentWithDentistAndPatient = SchemaAppointment & {
+  patient: Patient;
+  treatment: Treatment;
+  dentist: Dentist;
+};
 
 export type ReservationStatusType = keyof typeof ReservationStatus;
 

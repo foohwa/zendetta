@@ -1,5 +1,6 @@
 import { IconPlus } from "@tabler/icons-react";
 import { formatISO } from "date-fns";
+import { Button } from "@headlessui/react";
 
 export type AddEventCardTimeslotProps = {
   // children: ReactElement;
@@ -19,13 +20,13 @@ export const AddEventTimeslotCard = ({
   onClick,
 }: AddEventCardTimeslotProps) => {
   return (
-    <button
+    <Button
       className="rbc-time-slot group h-full w-full hover:bg-stone-100/50"
       onClick={() =>
         onClick({ selectedDate: formatISO(value), selectedDentistId: resource })
       }
     >
       <IconPlus className="invisible m-auto text-stone-500 group-hover:visible" />
-    </button>
+    </Button>
   );
 };

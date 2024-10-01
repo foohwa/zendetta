@@ -95,7 +95,7 @@ const Step: FC<InternalStepProps> = ({
           )}
         >
           <span className="text-xs font-medium uppercase tracking-tight text-gray-400">
-            Step {index}
+            Step {index + 1}
           </span>
           <p className="text-sm font-semibold leading-tight tracking-tight">
             {title}

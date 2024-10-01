@@ -8,7 +8,6 @@ import {
 import { enUS } from "date-fns/locale/en-US";
 import { format, getDay, parse, startOfWeek } from "date-fns";
 import { useMemo } from "react";
-import { AppointmentCalendarHeader } from "~/types";
 
 const locales = {
   "en-US": enUS,

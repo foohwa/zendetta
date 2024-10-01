@@ -1,0 +1,1 @@
+ALTER TABLE "appointments" ALTER COLUMN "start" SET DATA TYPE timestamp with time zone;

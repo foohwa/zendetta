@@ -1,0 +1,1 @@
+ALTER TABLE "appointments" ALTER COLUMN "end" SET DATA TYPE timestamp with time zone;

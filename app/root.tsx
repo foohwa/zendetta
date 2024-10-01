@@ -16,7 +16,11 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet, as: "style" },
 ];
 
-export function Layout({ children }: { children: React.ReactNode }) {
+// export function Layout({ children }: { children: React.ReactNode }) {
+//
+// }
+
+export default function App() {
   return (
     <html lang="en" data-theme="bumblebee" className="antialiased">
       <head>
@@ -38,8 +42,4 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </body>
     </html>
   );
-}
-
-export default function App() {
-  return <Outlet />;
 }

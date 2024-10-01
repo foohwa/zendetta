@@ -1,11 +1,6 @@
-import {
-  appointmentEvents,
-  BackgroundEvents,
-  ReservationHeader,
-} from "~/resources/resourcesEvents";
 import "../styles/calendar.css";
 import { Components } from "react-big-calendar";
-import { Appointment, AppointmentCalendarHeader } from "~/types";
+import { AppointmentWithDentistAndPatient } from "~/types";
 import {
   AppointmentCardComponent,
   BigCalendar,
@@ -14,15 +9,18 @@ import {
   DoctorResourceHeader,
   OnLeaveCard,
 } from "~/components";
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import { isSameHour, isSameMinute, parseISO, set } from "date-fns";
 import { BreakTimeCard } from "~/components/break-time-card";
 import {
   AddEventTimeslotCard,
   EventCardEvent,
 } from "~/components/add-event-card";
-import { CreateAppointmentDialogComponent } from "~/components/create-appointment-dialog";
 import { useNavigate } from "react-router";
+import { json, Outlet, useLoaderData } from "@remix-run/react";
+import { getAllAppointments } from "~/db/queries/getAllAppointments";
+import { Dentist } from "~/db/schema";
+import { getDentistsWithAppointmentCount } from "~/db/queries/dentist";
 
 type TimeSlotWrapperProps = {
   children: ReactElement;
@@ -30,37 +28,30 @@ type TimeSlotWrapperProps = {
   resource: string;
 };
 
-const initialState = {
-  selectedSlot: {
-    selectedDate: "2024-07-14T14:00:00+08:00",
-    selectedDentistId: "42",
-  },
+export const loader = async () => {
+  const allAppointments: AppointmentWithDentistAndPatient[] =
+    await getAllAppointments();
+
+  const allDentist = await getDentistsWithAppointmentCount();
+
+  return json({ appointments: allAppointments, dentists: allDentist });
 };
 
 export default function Reservations() {
-  const [events, setEvents] = useState([
-    ...appointmentEvents,
-    ...BackgroundEvents,
-  ]);
-  const [open, setOpen] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState<EventCardEvent>(
-    initialState.selectedSlot,
-  );
+  const { appointments, dentists } = useLoaderData<typeof loader>();
 
   const onAddEvent = ({ selectedDate, selectedDentistId }: EventCardEvent) => {
-    setSelectedSlot({ selectedDate, selectedDentistId });
-    navigate("new");
-    setOpen(true);
+    navigate(
+      `new?selectedDate=${encodeURIComponent(selectedDate)}&selectedDentistId=${selectedDentistId}`,
+    );
   };
   const navigate = useNavigate();
 
-  const components: Components<Appointment, AppointmentCalendarHeader> = {
+  const components: Components<AppointmentWithDentistAndPatient, Dentist> = {
     event: ({ event, ...rest }) => {
-      // console.log(event);
-      // console.log(event);
-      // if (!event) {
-      //   return;
-      // }
+      if (!event) {
+        return;
+      }
 
       if (!event.treatment) {
         return <OnLeaveCard />;
@@ -68,10 +59,10 @@ export default function Reservations() {
       return <AppointmentCardComponent {...event} />;
     },
     resourceHeader: ({ resource }) => {
-      return <DoctorResourceHeader {...resource} />;
+      return <DoctorResourceHeader totalOfTodayAppointment={5} {...resource} />;
     },
     toolbar: (toolbarProps) => {
-      return <CustomCalendarToolbar {...toolbarProps} events={events} />;
+      return <CustomCalendarToolbar {...toolbarProps} events={appointments} />;
     },
     timeSlotWrapper: (props) => {
       // if (props.children.props.children?.props?.className !== "rbc-label") {
@@ -140,19 +131,21 @@ export default function Reservations() {
 
   return (
     <>
+      <Outlet />
       <div>
         <BigCalendar
           className="overscroll-none"
           views={["day", "week"]}
           defaultView="day"
-          events={events}
+          defaultDate={new Date(2024, 6, 21, 8, 0, 0)}
+          events={appointments}
           startAccessor={(appointment) => parseISO(appointment.start)}
           endAccessor={(appointment) => parseISO(appointment.end)}
-          titleAccessor={(appointment) => appointment.patientName}
+          titleAccessor={(appointment) => appointment.patient.firstName}
           // backgroundEvents={BackgroundEvents}
-          resources={ReservationHeader}
-          resourceAccessor={(appointment) => appointment.dentistId}
-          resourceIdAccessor="dentistId"
+          resources={dentists}
+          resourceAccessor={(appointment) => appointment.dentist.id}
+          resourceIdAccessor="id"
           resourceTitleAccessor="firstName"
           // allDayAccessor="status"
           min={new Date(2024, 1, 0, 8, 0, 0)}
@@ -163,15 +156,6 @@ export default function Reservations() {
             // console.log(e);
           }}
         />
-        {open && (
-          <CreateAppointmentDialogComponent
-            open={open}
-            selectedSlot={selectedSlot}
-            onClose={(value) => {
-              setOpen(value);
-            }}
-          />
-        )}
       </div>
     </>
   );

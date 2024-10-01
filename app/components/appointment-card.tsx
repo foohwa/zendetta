@@ -36,7 +36,7 @@ const toColorMapForAppointment = (
   appointmentMap: StatusToEventCardBackgroundMap | StatusToEventStatusIconMap,
 ) => appointmentMap[appointment.status];
 
-export const AppointmentCardComponent = (appointment: Appointment) => {
+export const AppointmentCardComponent = (appointment) => {
   // Format the Date objects to the desired time format
   const formattedStartTime = format(appointment.start, "h:mm a", {
     timeZone: "Asia/Kuala_Lumpur",
@@ -58,7 +58,7 @@ export const AppointmentCardComponent = (appointment: Appointment) => {
       </div>
 
       <div className="flex flex-1 flex-col">
-        <h5 className="text-black">{appointment.patientName}</h5>
+        <h5 className="text-black">{appointment.patient.firstName}</h5>
         <span className="inline-flex items-center text-sm text-gray-500">
           {formattedStartTime} <IconChevronRight size={15} /> {formattedEndTime}
         </span>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Combobox,
   ComboboxButton,
@@ -22,6 +22,7 @@ import { ISODateTime } from "~/types";
 import { addHours, format, parseISO } from "date-fns";
 import { z } from "zod";
 import { useRemixFormContext } from "remix-hook-form";
+import { useSearchParams } from "@remix-run/react";
 
 export type Treatment = {
   id: string;
@@ -54,15 +55,15 @@ export type TreatmentAndDentistFormValues = z.infer<
   typeof TreatmentAndDentistFormSchema
 >;
 
-export const TreatmentAndDentistPage = ({
-  selectedDentistId,
-  selectedDate,
-}: TreatmentAndDentistProps) => {
-  const { register, setValue } =
+export const TreatmentAndDentistPage = () => {
+  const { register, setValue, getValues } =
     useRemixFormContext<TreatmentAndDentistFormValues>();
+  const [params] = useSearchParams();
+  const selectedDate = params.get("selectedDate");
+  const selectedDentistId = params.get("selectedDentistId");
 
-  setValue("dentist", selectedDentistId);
-  setValue("date", selectedDate);
+  setValue("dentist", selectedDentistId!);
+  setValue("date", selectedDate!);
 
   const [selectedTreatment, setSelectedTreatment] = useState<
     Treatment[] | null[] | undefined
@@ -72,7 +73,7 @@ export const TreatmentAndDentistPage = ({
   const selectedDentist = dentists.find(
     (dentist) => dentist.dentistId === selectedDentistId,
   );
-  const date = parseISO(selectedDate);
+  const date = parseISO(selectedDate!);
   const nextHour = addHours(date, 1);
   const formattedDate = format(date, "EEEE, dd MMMM yyyy");
   const formattedHour = format(date, "HHmm");
