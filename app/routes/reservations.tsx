@@ -1,6 +1,5 @@
 import "../styles/calendar.css";
 import { Components } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import { AppointmentWithDentistAndPatient } from "~/types";
 import {
   AppointmentCardComponent,
