@@ -13,7 +13,7 @@ export const action = pgEnum("action", ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE'
 export const equalityOp = pgEnum("equality_op", ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in'])
 
 
-export const dentists = pgTable("dentists", {
+export const treatments = pgTable("treatments", {
 	id: serial("id").primaryKey().notNull(),
 	name: varchar("name", { length: 255 }).notNull(),
 });
@@ -45,7 +45,9 @@ export const patients = pgTable("patients", {
 	lastName: varchar("last_name", { length: 255 }).notNull(),
 });
 
-export const treatments = pgTable("treatments", {
+export const dentists = pgTable("dentists", {
 	id: serial("id").primaryKey().notNull(),
-	name: varchar("name", { length: 255 }).notNull(),
+	firstName: varchar("first_name", { length: 255 }).notNull(),
+	lastName: varchar("last_name", { length: 255 }),
+	avatarUrl: varchar("avatar_url", { length: 255 }),
 });
