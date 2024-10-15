@@ -4,8 +4,13 @@ import { format } from "date-fns";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { TotalAppointmentView } from "~/components/total-appointment-view";
 import { DentistFilterView } from "~/components/dentist-filter-view";
+import { AppointmentWithDentistAndPatient } from "~/types";
+import { Dentist } from "~/db/schema";
 
-type CustomCalendarToolbarProps = ToolbarProps & {
+type CustomCalendarToolbarProps = ToolbarProps<
+  AppointmentWithDentistAndPatient,
+  Dentist
+> & {
   events: NonNullable<unknown>[];
 };
 
